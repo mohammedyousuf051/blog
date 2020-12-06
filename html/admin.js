@@ -5,10 +5,10 @@ function renderallblogs(){
 	console.log($("#userlist").val())
 	if($("#userlist").val()=="all" || $("#userlist").val()=="")
 	{
-		urlchange = "http://192.168.0.107:8000/blogs/getallblogs/";
+		urlchange = "http://127.0.0.1:8000/blogs/getallblogs/";
 	}
 	else{
-		urlchange = "http://192.168.0.107:8000/blogs/getblogs/"+$("#userlist").val();
+		urlchange = "http://127.0.0.1:8000/blogs/getblogs/"+$("#userlist").val();
 	}
 
 $("#allblogs").empty();
@@ -27,8 +27,9 @@ $("#allblogs").empty();
 						renderdash +='  <div class="container">'
 						renderdash +='    <h4 ><b>'+k+'</b> <span onclick="delblog(this)" name="'+k+'" user="'+allblogresp[k]["creator"]+'" style="margin-left:75%;cursor:pointer">Delete</span></h4> <div>'
 						renderdash +='    <p>Created by <span>'+allblogresp[k]["creator"]+'<span></p>' 
-						renderdash +='    <p>Date</p>'
-						renderdash +='    <p>'+allblogresp[k]["description"]+'</p> <p onclick="openblog(this)" name="'+k+'" class="gg" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View Full Post</p>'
+						var date = allblogresp[k]["date"].split(" ");
+						renderdash +='    <p>Date '+date[0]+'</p>'
+						renderdash +='    <p>'+allblogresp[k]["description"]+'</p> <p style="color:lightblue" onclick="openblog(this)" name="'+k+'" class="gg" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View Full Post</p>'
 						renderdash +='  </div>'
 						renderdash +='</div>'
 						$("#allblogs").append(renderdash)
@@ -83,7 +84,7 @@ function renderallcomments(elm,e){
 	$("#comment_sec").empty();
 	console.log(elm,e)
 	$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/get_comment/"+elm+"/"+e,
+					  url:"http://127.0.0.1:8000/blogs/get_comment/"+elm+"/"+e,
 					  type:"GET",
 					  contentType: "application/json",
 					  dataType: "json",
@@ -91,7 +92,7 @@ function renderallcomments(elm,e){
 					  	commentsresp = res;
 					  	for(var i in commentsresp){
 					  	commentrender = '';
-  						commentrender+='<div><h5>'+commentsresp[i]["creator"]+'<span style="margin-left:60%" onclick="delcomm(this)" commid="'+i+'" name="'+e+'" user ="'+commentsresp[i]["creator"]+'">Delete</span></h5><p>'+commentsresp[i]["comment"]+'</p><br></div>'
+  						commentrender+='<div class="sep_comm"><h5>'+commentsresp[i]["creator"]+'<span style="margin-left:60%" onclick="delcomm(this)" commid="'+i+'" name="'+e+'" user ="'+commentsresp[i]["creator"]+'">Delete</span></h5><p>'+commentsresp[i]["comment"]+'</p><br></div>'
 					  	$("#comment_sec").append(commentrender);
 					  	}
 					  }
@@ -101,7 +102,7 @@ function renderallcomments(elm,e){
 
 function delcomm(elm){
 	$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/deletecomment/"+elm.getAttribute("commid"),
+					  url:"http://127.0.0.1:8000/blogs/deletecomment/"+elm.getAttribute("commid"),
 					  type:"POST",
 					  contentType: "application/json",
 					  // data:JSON.stringify(comm),
@@ -118,13 +119,13 @@ function post(elm){
 		}
 		console.log(comm);
 		$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/comment/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
+					  url:"http://127.0.0.1:8000/blogs/comment/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
 					  type:"POST",
 					  contentType: "application/json",
 					  data:JSON.stringify(comm),
 					  dataType: "json",
 					  success: function(){
-					    alert("hi");
+					    
 					    // rendersidenav(elm.getAttribute("name"));
 					    renderallcomments(elm.getAttribute("user"),elm.getAttribute("name"))
 					  },
@@ -158,7 +159,7 @@ function conversiontoimg(con){
 
 	function delblog(elm){
 	$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/deleteblog/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
+					  url:"http://127.0.0.1:8000/blogs/deleteblog/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
 					  type:"POST",
 					  contentType: "application/json",
 					  // data:JSON.stringify(comm),
@@ -174,7 +175,7 @@ var tablerender;
 function listuser(){
 	document.getElementById("selectuse").style.display = "block";
 	$.ajax({
-            url:"http://192.168.0.107:8000/users/getalluser/",
+            url:"http://127.0.0.1:8000/users/getalluser/",
             type:"GET",
             contentType: "application/json",
             dataType: "json",
@@ -182,9 +183,11 @@ function listuser(){
               var user_list = res;
               $("#tablelist").empty();
               for(var k in user_list){
+              	if(k != "page_admin"){
               		tablerender='';
               		tablerender+='<tr><td>User name : '+k+'</td><td> email id : '+user_list[k]["email"]+'</td></tr>'
                   $("#tablelist").append(tablerender)
+              }
               }
             }
           });

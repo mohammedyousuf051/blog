@@ -63,6 +63,7 @@ def getblogs(request,user):
         temp["detail"] = i.detail
         temp["image"] = i.image
         temp["creator"] = i.creator
+        temp["date"] = str(i.created_date)
         print(temp)
         resp[i.name] = temp
     return Response(resp)
@@ -164,6 +165,7 @@ def getallblogs(request):
         temp["detail"] = i.detail
         temp["image"] = i.image
         temp["creator"] = i.creator
+        temp["date"] = str(i.created_date)
         temp["comments"] = {}
         blogdata = blogs.objects.get(name=i.name)
         allcomment = blogcomments.objects.filter(name=blogdata)

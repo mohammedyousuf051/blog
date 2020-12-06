@@ -5,7 +5,7 @@ function renderallblogs(){
 
 $("#allblogs").empty();
 		$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/getblogs/"+localStorage.getItem("username"),
+					  url:"http://127.0.0.1:8000/blogs/getblogs/"+localStorage.getItem("username"),
 					  type:"GET",
 					  contentType: "application/json",
 					  dataType: "json",
@@ -20,8 +20,9 @@ $("#allblogs").empty();
 						renderdash +='  <div class="container">'
 						renderdash +='    <h4 ><b>'+k+'</b><span style="margin-left:76%;cursor:pointer" onclick="editblog(this)" name="'+k+'" user="'+allblogresp[k]["creator"]+'">Edit</span><span onclick="delblog(this)" name="'+k+'" user="'+allblogresp[k]["creator"]+'" style="margin-left:2%;cursor:pointer">Delete</span></h4> <div>'
 						renderdash +='    <p>Created by <span>'+allblogresp[k]["creator"]+'<span></p>' 
-						renderdash +='    <p>Date</p>'
-						renderdash +='    <p>'+allblogresp[k]["description"]+'</p> <p onclick="openblog(this)" name="'+k+'" class="gg" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View Full Post</p>'
+						var date = allblogresp[k]["date"].split(" ");
+						renderdash +='    <p>Date '+date[0]+'</p>'
+						renderdash +='    <p>'+allblogresp[k]["description"]+'</p> <p style="color:lightblue" onclick="openblog(this)" name="'+k+'" class="gg" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View Full Post</p>'
 						renderdash +='  </div>'
 						renderdash +='</div>'
 						$("#allblogs").append(renderdash)
@@ -63,7 +64,7 @@ renderfull='';
   renderfull+='</div>';
     renderallcomments(allblogresp[name]["creator"],name);
   renderfull+='</div>';
-  renderfull+='<div class="postcomment"><input type="text" id="comment" placeholder="Add comments"> <button onclick="post(this)" name="'+name+'" user="'+allblogresp[name]["creator"]+'">Post</button></div></div>'
+  renderfull+='<div class="postcomment"><input style="width:50%;height:50px" type="text" id="comment" placeholder="Add comments"> <button style="padding:10px;" onclick="post(this)" name="'+name+'" user="'+allblogresp[name]["creator"]+'">Post</button></div></div>'
 $("#mySidenav").append(renderfull);	
 }
 
@@ -76,7 +77,7 @@ function renderallcomments(elm,e){
 	$("#comment_sec").empty();
 	console.log(elm,e)
 	$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/get_comment/"+elm+"/"+e,
+					  url:"http://127.0.0.1:8000/blogs/get_comment/"+elm+"/"+e,
 					  type:"GET",
 					  contentType: "application/json",
 					  dataType: "json",
@@ -84,7 +85,7 @@ function renderallcomments(elm,e){
 					  	commentsresp = res;
 					  	for(var i in commentsresp){
 					  	commentrender = '';
-  						commentrender+='<div><h5>'+commentsresp[i]["creator"]+'</h5><p>'+commentsresp[i]["comment"]+'</p><br></div>'
+  						commentrender+='<div class="sep_comm"><h5>'+commentsresp[i]["creator"]+'</h5><p>'+commentsresp[i]["comment"]+'</p><br></div>'
 					  	$("#comment_sec").append(commentrender);
 					  	}
 					  }
@@ -98,13 +99,13 @@ function post(elm){
 		}
 		console.log(comm);
 		$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/comment/"+localStorage.getItem("username")+"/"+elm.getAttribute("name"),
+					  url:"http://127.0.0.1:8000/blogs/comment/"+localStorage.getItem("username")+"/"+elm.getAttribute("name"),
 					  type:"POST",
 					  contentType: "application/json",
 					  data:JSON.stringify(comm),
 					  dataType: "json",
 					  success: function(){
-					    alert("hi");
+					    
 					    renderallcomments(elm.getAttribute("user"),elm.getAttribute("name"))
 					  },
 					  error: function(e) {
@@ -155,7 +156,7 @@ function sendthis(){
 		}
 		console.log(items);
 		$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/create/"+localStorage.getItem("username"),
+					  url:"http://127.0.0.1:8000/blogs/create/"+localStorage.getItem("username"),
 					  type:"POST",
 					  contentType: "application/json",
 					  data:JSON.stringify(items),
@@ -185,7 +186,7 @@ function sendedits(){
 			"detail": $("#Edetail").val(),
 		}
 	$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/updateblogs/"+edituser+"/"+editname,
+					  url:"http://127.0.0.1:8000/blogs/updateblogs/"+edituser+"/"+editname,
 					  type:"POST",
 					  contentType: "application/json",
 					  data:JSON.stringify(items),
@@ -198,7 +199,7 @@ function sendedits(){
 
 function delblog(elm){
 	$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/deleteblog/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
+					  url:"http://127.0.0.1:8000/blogs/deleteblog/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
 					  type:"POST",
 					  contentType: "application/json",
 					  // data:JSON.stringify(comm),
