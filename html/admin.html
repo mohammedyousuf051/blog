@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+
+
+<style>
+* {box-sizing: border-box;}
+
+body { 
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+  overflow: hidden;
+  background-color: #f1f1f1;
+  padding: 20px 10px;
+}
+
+.header a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px; 
+  line-height: 25px;
+  border-radius: 4px;
+}
+
+.header a.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.header a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.header a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.header-right {
+  float: right;
+}
+
+@media screen and (max-width: 500px) {
+  .header a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  
+  .header-right {
+    float: none;
+  }
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 70%;
+  margin-top: 20px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+  padding: 2px 16px;
+}
+.allblogs{
+	margin-left: 10%;
+	margin-top: 5%;
+	padding-top: 20px;
+}
+
+.t-head .gg{
+float: left;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: lightgrey;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  text-align:left;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+
+}
+.cont{
+	padding-left: 50px;
+}
+
+.sidenav a:hover{
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+.comment_sec{
+	background-color: white;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+.selectuser{
+  position: fixed;
+  
+  /*display: none;*/
+}
+#selectuse{
+  display: none;
+
+    left: 7%;
+    background-color: white;
+    width: 85%;
+    height: 500px;
+    top: 21%;
+    border: 1px solid;
+    padding: 15px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  
+  text-align: left;
+  padding: 8px;
+}
+tr{
+  border: 1px solid #dddddd;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="#default" class="logo">The <b>BLOG</b></a>
+  <div class="header-right">
+    <a class="active" href="#home">Home</a>
+    <a onclick="listuser()">Users</a>
+    <a href="#about"><label for="cars">Filter Blogs based on User:</label>
+  <select name="users" id="userlist" onchange="renderallblogs()">
+    <option value="all">All</option>
+    <!-- <option value="saab">Saab</option>
+    <option value="opel">Opel</option>
+    <option value="audi">Audi</option> -->
+
+    <script>
+      $.ajax({
+            url:"http://192.168.0.107:8000/users/getalluser/",
+            type:"GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function(res){
+              var user_resp = res;
+              for(var k in user_resp){
+                  $("#userlist").append('<option value="'+k+'">'+k+'</option>')
+              }
+            }
+          });
+    </script>
+  </select></a>
+  <a id="loguserd" href="login.html"><i class="fa fa-user"></i> <script >  document.getElementById("loguserd").innerHTML = localStorage.getItem("username");
+</script></a>
+  </div>
+</div>
+
+<div class="allblogs" id="allblogs">
+  <div class="card">
+  <img src="img_avatar.png" alt="Avatar" style="width:100%">
+  <div class="container">
+    <h4><b>John Doe</b></h4> 
+    <p>Created by <span>ss<span></p> 
+    <p>Date</p>
+    <p>Description</p>
+  </div>
+</div>
+</div>
+
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div>
+  	<h1></h1>
+  	<p></p>
+  	<p></p>
+  </div>
+</div>
+ 
+<div class="selectuser" id="selectuse">
+  <h2 >Users list <span style="margin-left: 80%;font-size: 15px;color: red;cursor: pointer;border:1px solid red;padding: 5px;" onclick="closeuser()">Close</span></h2><br>
+  <table id="tablelist">
+    
+  </table>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
