@@ -5,7 +5,7 @@ function renderallblogs(){
 
 $("#allblogs").empty();
 		$.ajax({
-					  url:"http://127.0.0.1:8000/blogs/getblogs/"+localStorage.getItem("username"),
+					  url:"http://192.168.0.107:8000/blogs/getblogs/"+localStorage.getItem("username"),
 					  type:"GET",
 					  contentType: "application/json",
 					  dataType: "json",
@@ -77,7 +77,7 @@ function renderallcomments(elm,e){
 	$("#comment_sec").empty();
 	console.log(elm,e)
 	$.ajax({
-					  url:"http://127.0.0.1:8000/blogs/get_comment/"+elm+"/"+e,
+					  url:"http://192.168.0.107:8000/blogs/get_comment/"+elm+"/"+e,
 					  type:"GET",
 					  contentType: "application/json",
 					  dataType: "json",
@@ -99,7 +99,7 @@ function post(elm){
 		}
 		console.log(comm);
 		$.ajax({
-					  url:"http://127.0.0.1:8000/blogs/comment/"+localStorage.getItem("username")+"/"+elm.getAttribute("name"),
+					  url:"http://192.168.0.107:8000/blogs/comment/"+localStorage.getItem("username")+"/"+elm.getAttribute("name"),
 					  type:"POST",
 					  contentType: "application/json",
 					  data:JSON.stringify(comm),
@@ -156,7 +156,7 @@ function sendthis(){
 		}
 		console.log(items);
 		$.ajax({
-					  url:"http://127.0.0.1:8000/blogs/create/"+localStorage.getItem("username"),
+					  url:"http://192.168.0.107:8000/blogs/create/"+localStorage.getItem("username"),
 					  type:"POST",
 					  contentType: "application/json",
 					  data:JSON.stringify(items),
@@ -186,7 +186,7 @@ function sendedits(){
 			"detail": $("#Edetail").val(),
 		}
 	$.ajax({
-					  url:"http://127.0.0.1:8000/blogs/updateblogs/"+edituser+"/"+editname,
+					  url:"http://192.168.0.107:8000/blogs/updateblogs/"+edituser+"/"+editname,
 					  type:"POST",
 					  contentType: "application/json",
 					  data:JSON.stringify(items),
@@ -199,7 +199,7 @@ function sendedits(){
 
 function delblog(elm){
 	$.ajax({
-					  url:"http://127.0.0.1:8000/blogs/deleteblog/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
+					  url:"http://192.168.0.107:8000/blogs/deleteblog/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
 					  type:"POST",
 					  contentType: "application/json",
 					  // data:JSON.stringify(comm),

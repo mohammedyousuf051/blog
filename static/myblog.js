@@ -1,10 +1,10 @@
-
 var allblogresp,renderdash;
 function renderallblogs(){
+		document.getElementById("loguser").innerHTML = localStorage.getItem("username");
 
 $("#allblogs").empty();
 		$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/getallblogs/",
+					  url:blogurl+"blogs/getblogs/"+localStorage.getItem("username"),
 					  type:"GET",
 					  contentType: "application/json",
 					  dataType: "json",
@@ -14,13 +14,14 @@ $("#allblogs").empty();
 					    for (var k in allblogresp){
 					    	renderdash = '';
 					    renderdash +='<div class="card">'
+
 						renderdash +=conversiontoimg(allblogresp[k]["image"])
 						renderdash +='  <div class="container">'
-						renderdash +='    <h4 ><b>'+k+'</b></h4> <div>'
+						renderdash +='    <h4 ><b>'+k+'</b><span style="margin-left:76%;cursor:pointer" onclick="editblog(this)" name="'+k+'" user="'+allblogresp[k]["creator"]+'">Edit</span><span onclick="delblog(this)" name="'+k+'" user="'+allblogresp[k]["creator"]+'" style="margin-left:2%;cursor:pointer">Delete</span></h4> <div>'
 						renderdash +='    <p>Created by <span>'+allblogresp[k]["creator"]+'<span></p>' 
 						var date = allblogresp[k]["date"].split(" ");
 						renderdash +='    <p>Date '+date[0]+'</p>'
-						renderdash +='    <p>'+allblogresp[k]["description"]+'</p> <p onclick="openblog(this)" name="'+k+'" style="color:lightblue" class="gg" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View Full Post</p>'
+						renderdash +='    <p>'+allblogresp[k]["description"]+'</p> <p style="color:lightblue" onclick="openblog(this)" name="'+k+'" class="gg" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View Full Post</p>'
 						renderdash +='  </div>'
 						renderdash +='</div>'
 						$("#allblogs").append(renderdash)
@@ -38,12 +39,12 @@ var renderfull;
 
 function openblog(elm) {
   document.getElementById("mySidenav").style.width = "100%";
-  rendersidenav(elm.getAttribute("name"));
- 
+  
+  rendersidenav(elm.getAttribute("name"))
+
 }
 
 function rendersidenav(e){
-	console.log(e);
 var name = e;
 $("#mySidenav").empty();
 renderfull='';
@@ -60,12 +61,14 @@ renderfull='';
   // 	renderfull+='<h5>'+allblogresp[name]["comments"][key]["creator"]+'</h5><p>'+allblogresp[name]["comments"][key]["comment"]+'</p><br>'
   // }
   renderfull+='</div>';
-
-  renderallcomments(allblogresp[name]["creator"],name);
-
+    renderallcomments(allblogresp[name]["creator"],name);
   renderfull+='</div>';
   renderfull+='<div class="postcomment"><input style="width:50%;height:50px" type="text" id="comment" placeholder="Add comments"> <button style="padding:10px;" onclick="post(this)" name="'+name+'" user="'+allblogresp[name]["creator"]+'">Post</button></div></div>'
 $("#mySidenav").append(renderfull);	
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
 }
 
 var commentsresp,commentrender;
@@ -73,7 +76,7 @@ function renderallcomments(elm,e){
 	$("#comment_sec").empty();
 	console.log(elm,e)
 	$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/get_comment/"+elm+"/"+e,
+					  url:blogurl+"blogs/get_comment/"+elm+"/"+e,
 					  type:"GET",
 					  contentType: "application/json",
 					  dataType: "json",
@@ -95,14 +98,13 @@ function post(elm){
 		}
 		console.log(comm);
 		$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/comment/"+localStorage.getItem("username")+"/"+elm.getAttribute("name"),
+					  url:blogurl+"blogs/comment/"+localStorage.getItem("username")+"/"+elm.getAttribute("name"),
 					  type:"POST",
 					  contentType: "application/json",
 					  data:JSON.stringify(comm),
 					  dataType: "json",
 					  success: function(){
 					    
-					    // rendersidenav(elm.getAttribute("name"));
 					    renderallcomments(elm.getAttribute("user"),elm.getAttribute("name"))
 					  },
 					  error: function(e) {
@@ -111,12 +113,108 @@ function post(elm){
 					});
 	}
 
-function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
+
+
+
+var base;
+
+ function encodeImagetoBase64(element) {
+
+
+    var file = element.files[0];
+
+    var reader = new FileReader();
+
+    reader.onloadend = function() {
+
+      /*$(".link").attr("href",reader.result);*/
+
+      // $(".link").text(reader.result.split(',')[1]);
+      /*$(".link").text(reader.substr(result.indexOf(',') + 1));*/
+      base=reader.result.split(',')[1];
+      console.log(base);
+
+    }
+
+    reader.readAsDataURL(file);
+
+  }
+
+
+function blogform(){
+	document.getElementById("addblogcontent").style.display = "block";
+}  
+
+
+function sendthis(){
+		var items = {
+			"name": $("#name").val(),
+			"description": $("#description").val(),
+			"detail": $("#detail").val(),
+			"image": base
+		}
+		console.log(items);
+		$.ajax({
+					  url:blogurl+"blogs/create/"+localStorage.getItem("username"),
+					  type:"POST",
+					  contentType: "application/json",
+					  data:JSON.stringify(items),
+					  dataType: "json",
+					  success: function(){
+					    window.location.reload();
+					  },
+					  error: function(e) {
+					    console.log(e);
+					  },
+					});
+	}
+
+
+var editname,edituser;
+function editblog(elm){
+	document.getElementById("addblogedit").style.display = "block";
+	edituser = elm.getAttribute("user");
+	editname = elm.getAttribute("name");
+	
+
+}
+
+function sendedits(){
+	var items = {
+			"description": $("#Edescription").val(),
+			"detail": $("#Edetail").val(),
+		}
+	$.ajax({
+					  url:blogurl+"blogs/updateblogs/"+edituser+"/"+editname,
+					  type:"POST",
+					  contentType: "application/json",
+					  data:JSON.stringify(items),
+					  dataType: "json",
+					  success: function(){
+					  	alert("edits done");
+					  	window.location.reload();
+					  }});
+}
+
+function delblog(elm){
+	$.ajax({
+					  url:blogurl+"blogs/deleteblog/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
+					  type:"POST",
+					  contentType: "application/json",
+					  // data:JSON.stringify(comm),
+					  dataType: "json",
+					  success: function(){
+					  	alert("deleted successfully");
+					  	window.location.reload();
+					  }});
+	
 }
 
 
-function conversiontoimg(con){
+
+
+
+	function conversiontoimg(con){
 
 	var item_image=con;
 	var src = "data:image/jpeg;base64,";

@@ -1,14 +1,13 @@
-
 var allblogresp,renderdash;
 function renderallblogs(){
 	var urlchange;
 	console.log($("#userlist").val())
 	if($("#userlist").val()=="all" || $("#userlist").val()=="")
 	{
-		urlchange = "http://192.168.0.107:8000/blogs/getallblogs/";
+		urlchange = blogurl+"blogs/getallblogs/";
 	}
 	else{
-		urlchange = "http://192.168.0.107:8000/blogs/getblogs/"+$("#userlist").val();
+		urlchange = blogurl+"blogs/getblogs/"+$("#userlist").val();
 	}
 
 $("#allblogs").empty();
@@ -84,7 +83,7 @@ function renderallcomments(elm,e){
 	$("#comment_sec").empty();
 	console.log(elm,e)
 	$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/get_comment/"+elm+"/"+e,
+					  url:blogurl+"blogs/get_comment/"+elm+"/"+e,
 					  type:"GET",
 					  contentType: "application/json",
 					  dataType: "json",
@@ -102,7 +101,7 @@ function renderallcomments(elm,e){
 
 function delcomm(elm){
 	$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/deletecomment/"+elm.getAttribute("commid"),
+					  url:blogurl+"blogs/deletecomment/"+elm.getAttribute("commid"),
 					  type:"POST",
 					  contentType: "application/json",
 					  // data:JSON.stringify(comm),
@@ -119,7 +118,7 @@ function post(elm){
 		}
 		console.log(comm);
 		$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/comment/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
+					  url:blogurl+"blogs/comment/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
 					  type:"POST",
 					  contentType: "application/json",
 					  data:JSON.stringify(comm),
@@ -159,7 +158,7 @@ function conversiontoimg(con){
 
 	function delblog(elm){
 	$.ajax({
-					  url:"http://192.168.0.107:8000/blogs/deleteblog/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
+					  url:blogurl+"blogs/deleteblog/"+elm.getAttribute("user")+"/"+elm.getAttribute("name"),
 					  type:"POST",
 					  contentType: "application/json",
 					  // data:JSON.stringify(comm),
@@ -175,7 +174,7 @@ var tablerender;
 function listuser(){
 	document.getElementById("selectuse").style.display = "block";
 	$.ajax({
-            url:"http://192.168.0.107:8000/users/getalluser/",
+            url:blogurl+"users/getalluser/",
             type:"GET",
             contentType: "application/json",
             dataType: "json",

@@ -3,11 +3,11 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
-
+<script src="../../static/changeurl.js"></script>
 
 <style>
 * {box-sizing: border-box;}
@@ -111,6 +111,10 @@ float: left;
   transition: 0.3s;
 
 }
+.sep_comm{
+   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding-left: 20px;
+}
 .cont{
 	padding-left: 50px;
 }
@@ -131,45 +135,10 @@ float: left;
     width: 94%;
     padding: 10px;
 }
-.sep_comm{
-   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    padding-left: 20px;
-}
 
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
-}
-.selectuser{
-  position: fixed;
-  
-  /*display: none;*/
-}
-#selectuse{
-  display: none;
-
-    left: 7%;
-    background-color: white;
-    width: 85%;
-    height: 500px;
-    top: 21%;
-    border: 1px solid;
-    padding: 15px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td, th {
-  
-  text-align: left;
-  padding: 8px;
-}
-tr{
-  border: 1px solid #dddddd;
 }
 
 </style>
@@ -180,30 +149,8 @@ tr{
   <a href="#default" class="logo">The <b>BLOG</b></a>
   <div class="header-right">
     <a class="active" href="#home">Home</a>
-    <a onclick="listuser()">Users</a>
-    <a href="#about"><label for="cars">Filter Blogs based on User:</label>
-  <select name="users" id="userlist" onchange="renderallblogs()">
-    <option value="all">All</option>
-    <!-- <option value="saab">Saab</option>
-    <option value="opel">Opel</option>
-    <option value="audi">Audi</option> -->
-
-    <script>
-      $.ajax({
-            url:"http://192.168.0.107:8000/users/getalluser/",
-            type:"GET",
-            contentType: "application/json",
-            dataType: "json",
-            success: function(res){
-              var user_resp = res;
-              for(var k in user_resp){
-                  $("#userlist").append('<option value="'+k+'">'+k+'</option>')
-              }
-            }
-          });
-    </script>
-  </select></a>
-  <a id="loguserd" href="login.html"><i class="fa fa-user"></i> <script >  document.getElementById("loguserd").innerHTML = localStorage.getItem("username");
+    <a href="../myblog/">My Blogs</a>
+    <a id="loguserd" href="../login/"><i class="fa fa-user"></i> <script >	document.getElementById("loguserd").innerHTML = localStorage.getItem("username");
 </script></a>
   </div>
 </div>
@@ -230,13 +177,8 @@ tr{
   </div>
 </div>
  
-<div class="selectuser" id="selectuse">
-  <h2 >Users list <span style="margin-left: 80%;font-size: 15px;color: red;cursor: pointer;border:1px solid red;padding: 5px;" onclick="closeuser()">Close</span></h2><br>
-  <table id="tablelist">
-    
-  </table>
-</div>
 
-<script src="admin.js"></script>
+
+<script src="../../static/script.js"></script>
 </body>
 </html>

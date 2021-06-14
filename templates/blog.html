@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="../../static/changeurl.js"></script>
+	<title></title>
+</head>
+<body>
+<div>
+	<input type="text" id="name" name="" placeholder="name">
+		<input type="email" id="description" name="" placeholder="description">
+	<input type="password" id="detail" name="" placeholder="detail">
+	<input type="text" id="image" name="" placeholder="pic">
+	<button onclick="sendthis()">send</button>
+
+	<p>add comment</p>
+	<input type="text" id="comment" name="com">
+	<button onclick="post()">post</button>
+</div>
+
+<script>
+	function sendthis(){
+		var items = {
+			"name": $("#name").val(),
+			"description": $("#description").val(),
+			"detail": $("#detail").val(),
+			"image": $("#image").val()
+		}
+		console.log(items);
+		$.ajax({
+					  url:blogurl+"blogs/create/yousuf",
+					  type:"POST",
+					  contentType: "application/json",
+					  data:JSON.stringify(items),
+					  dataType: "json",
+					  success: function(){
+					    alert("hi");
+					  },
+					  error: function(e) {
+					    console.log(e);
+					  },
+					});
+	}
+
+	function post(){
+		var comm = {
+			"comment": $("#comment").val(),
+		}
+		console.log(comm);
+		$.ajax({
+					  url:blogurl+"blogs/comment/yousuf/Ahmed_Final",
+					  type:"POST",
+					  contentType: "application/json",
+					  data:JSON.stringify(comm),
+					  dataType: "json",
+					  success: function(){
+					    alert("hi");
+					  },
+					  error: function(e) {
+					    console.log(e);
+					  },
+					});
+	}
+</script>
+</body>
+</html>

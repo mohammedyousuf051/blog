@@ -7,7 +7,7 @@
 		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
-
+<script src="../../static/changeurl.js"></script>
 
 <style>
 * {box-sizing: border-box;}
@@ -190,7 +190,7 @@ tr{
 
     <script>
       $.ajax({
-            url:"http://192.168.0.107:8000/users/getalluser/",
+            url:blogurl+"users/getalluser/",
             type:"GET",
             contentType: "application/json",
             dataType: "json",
@@ -203,7 +203,7 @@ tr{
           });
     </script>
   </select></a>
-  <a id="loguserd" href="login.html"><i class="fa fa-user"></i> <script >  document.getElementById("loguserd").innerHTML = localStorage.getItem("username");
+  <a id="loguserd" href="../login/"><i class="fa fa-user"></i> <script >  document.getElementById("loguserd").innerHTML = localStorage.getItem("username");
 </script></a>
   </div>
 </div>
@@ -237,6 +237,6 @@ tr{
   </table>
 </div>
 
-<script src="admin.js"></script>
+<script src="../../static/admin.js"></script>
 </body>
 </html>

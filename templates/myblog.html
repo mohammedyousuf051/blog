@@ -7,7 +7,7 @@
 		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
-
+<script src="../../static/changeurl.js"></script>
 
 <style>
 * {box-sizing: border-box;}
@@ -131,45 +131,58 @@ float: left;
     width: 94%;
     padding: 10px;
 }
-.sep_comm{
-   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    padding-left: 20px;
-}
 
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-.selectuser{
+.addblog{
   position: fixed;
-  
-  /*display: none;*/
+  float: right;
+  right: 2%;
+  top: 15% !important;
+  background-color: #9bb2b9;
+  color: white;
+  padding: 10px;
 }
-#selectuse{
-  display: none;
-
-    left: 7%;
+.addblogcontent{
+ position: fixed;
+    top: 15% !important;
+    left: 6%;
+    width: 80%;
+     height: 625px; 
+     overflow-y: auto;
     background-color: white;
-    width: 85%;
-    height: 500px;
-    top: 21%;
-    border: 1px solid;
-    padding: 15px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding: 10px;
+    display: none;
 }
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
+.sep_comm{
+   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding-left: 20px;
+}
+.addblogcontent input{
   width: 100%;
+    padding: 19px;
+    margin-top: 33px;
 }
+textarea{
+  width: 100%;
+    height: 300px;
+    margin-top: 25px;
+}
+.post-blog{
+  padding: 10px;
+    font-size: 17px;
+    color: white;
+    background-color: #80d7cd;
+    border: none;
+    margin-left: 92%;
+    margin-top: -48%;
 
-td, th {
-  
-  text-align: left;
-  padding: 8px;
 }
-tr{
-  border: 1px solid #dddddd;
+#addblogedit{
+  display: none;
 }
 
 </style>
@@ -179,32 +192,9 @@ tr{
 <div class="header">
   <a href="#default" class="logo">The <b>BLOG</b></a>
   <div class="header-right">
-    <a class="active" href="#home">Home</a>
-    <a onclick="listuser()">Users</a>
-    <a href="#about"><label for="cars">Filter Blogs based on User:</label>
-  <select name="users" id="userlist" onchange="renderallblogs()">
-    <option value="all">All</option>
-    <!-- <option value="saab">Saab</option>
-    <option value="opel">Opel</option>
-    <option value="audi">Audi</option> -->
-
-    <script>
-      $.ajax({
-            url:"http://192.168.0.107:8000/users/getalluser/",
-            type:"GET",
-            contentType: "application/json",
-            dataType: "json",
-            success: function(res){
-              var user_resp = res;
-              for(var k in user_resp){
-                  $("#userlist").append('<option value="'+k+'">'+k+'</option>')
-              }
-            }
-          });
-    </script>
-  </select></a>
-  <a id="loguserd" href="login.html"><i class="fa fa-user"></i> <script >  document.getElementById("loguserd").innerHTML = localStorage.getItem("username");
-</script></a>
+    <a  href="../dashboard/">Home</a>
+    <a class="active" href="#contact">My Blogs</a>
+    <a  href="../login/"><i class="fa fa-user"></i> <span id="loguser">user</span></a>
   </div>
 </div>
 
@@ -229,14 +219,41 @@ tr{
   	<p></p>
   </div>
 </div>
- 
-<div class="selectuser" id="selectuse">
-  <h2 >Users list <span style="margin-left: 80%;font-size: 15px;color: red;cursor: pointer;border:1px solid red;padding: 5px;" onclick="closeuser()">Close</span></h2><br>
-  <table id="tablelist">
-    
-  </table>
-</div>
 
-<script src="admin.js"></script>
+<div class="addblog" onclick="blogform()">
+  <h4> Add Blog</h4>
+  </div>
+
+  <div class="addblogcontent" id="addblogcontent">
+    <h3>Create your own blog</h3>
+    <input type="text" id="name" name="" placeholder="Enter blog name"><br>
+    <input type="text" id="description" name="" placeholder="Enter blog description"><br>
+    <textarea type="text" id="detail" name="" placeholder="Enter your Story"></textarea> <br>
+
+    <input type="file" onchange="encodeImagetoBase64(this)" id="image" name="" placeholder="Image for your blog"> Add image for your blog<br>
+    <button class="post-blog" onclick="sendthis()">Post Blog</button>
+
+  <!-- <p>add comment</p>
+  <input type="text" id="comment" name="com">
+  <button onclick="post()">post</button> -->
+  </div>
+
+  <div class="addblogcontent" id="addblogedit">
+    <h3>Edit your own blog</h3>
+    <!-- <input type="text" id="name" name="" placeholder="Enter blog name"><br> -->
+    <input type="text" id="Edescription" name="" placeholder="Enter blog description"><br>
+    <textarea type="text" id="Edetail" name="" placeholder="Enter your Story"></textarea> <br>
+<!-- 
+    <input type="file" onchange="encodeImagetoBase64(this)" id="image" name="" placeholder="Image for your blog"> Add image for your blog<br> -->
+    <button class="post-blog" onclick="sendedits()">Post Changes</button>
+
+  <!-- <p>add comment</p>
+  <input type="text" id="comment" name="com">
+  <button onclick="post()">post</button> -->
+  </div>
+ 
+
+
+<script src="../../static/myblog.js"></script>
 </body>
 </html>
